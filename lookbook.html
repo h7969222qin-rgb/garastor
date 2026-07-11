@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery — GARASTOR — La Forma-di-Vita</title>
+<meta name="description" content="GARASTOR Gallery — La Forma-di-Vita. Bare Life, Potentiality, and the Irrevocable: The Floor as the Negative of Life.">
+<link rel="icon" type="image/svg+xml" href='https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+<style>
+:root {
+  --garastor-gold: #C8A96E;
+  --garastor-black: #1A1A1A;
+  --garastor-cream: #F8F5F0;
+  --garastor-dark: #2A2520;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  overflow-x: hidden;
+  font-family: "Cormorant Garamond", "Garamond", "Georgia", "Times New Roman", serif;
+  background: var(--garastor-cream);
+  color: var(--garastor-black);
+  line-height: 1.8;
+}
+
+/* ========== TOP LEFT TEXT PANEL (standalone, not overlaid) ========== */
+.text-panel {
+  position: relative;
+  min-height: 100vh;
+  display: flex; align-items: flex-start; justify-content: flex-start;
+  padding: 140px 80px 80px;
+  background: var(--garastor-dark);
+  color: #fff;
+}
+.text-panel::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(200,169,110,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.panel-inner {
+  max-width: 780px; z-index: 1;
+}
+.panel-inner h1 {
+  font-size: clamp(38px, 6vw, 72px); font-weight: 300;
+  letter-spacing: 6px; line-height: 1.2; margin-bottom: 28px;
+  color: #fff;
+}
+.panel-inner .subtitle {
+  font-size: clamp(16px, 2vw, 22px); letter-spacing: 4px;
+  font-weight: 300; opacity: 0.85; margin-bottom: 32px;
+  line-height: 1.5; color: var(--garastor-gold);
+}
+.panel-inner .desc {
+  font-size: clamp(14px, 1.5vw, 18px); letter-spacing: 1.5px;
+  font-weight: 300; opacity: 0.75; line-height: 2;
+  max-width: 680px;
+}
+.panel-inner .desc em { color: var(--garastor-gold); font-style: italic; opacity: 0.9; }
+
+/* ========== FULL-WIDTH IMAGE + QUOTE ========== */
+.meditation {
+  position: relative; width: 100%;
+}
+.meditation-img {
+  width: 100%; height: 85vh; object-fit: cover; display: block;
+}
+.meditation-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(26,26,26,0.55) 0%, rgba(26,26,26,0.25) 50%, rgba(26,26,26,0.55) 100%);
+}
+.meditation-text {
+  position: absolute; z-index: 2;
+  color: #fff; max-width: 640px;
+}
+/* alternating positions */
+.meditation-text.top-left    { top: 12%; left: 7%; text-align: left; }
+.meditation-text.bottom-right{ bottom: 12%; right: 7%; text-align: right; }
+.meditation-text.center      { top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+.meditation-text .quote {
+  font-size: clamp(18px, 2.2vw, 28px); font-weight: 300; font-style: italic;
+  letter-spacing: 1px; line-height: 1.5; margin-bottom: 16px;
+  opacity: 0.92;
+}
+.meditation-text .attribution {
+  font-size: clamp(11px, 1.2vw, 14px); letter-spacing: 3px;
+  text-transform: uppercase; opacity: 0.65;
+  color: var(--garastor-gold);
+}
+.meditation-text .caption {
+  font-size: clamp(12px, 1.1vw, 15px); letter-spacing: 2px;
+  opacity: 0.7; margin-top: 10px; font-style: italic;
+}
+
+/* ========== SERIES NAV (compact, subtle) ========== */
+.series-nav {
+  max-width: 1000px; margin: 0 auto; padding: 100px 40px 60px;
+  text-align: center;
+}
+.series-nav h2 {
+  font-size: clamp(26px, 3.5vw, 38px); font-weight: 300;
+  letter-spacing: 3px; margin-bottom: 12px;
+}
+.series-nav .nav-lede {
+  font-size: 14px; color: #888; letter-spacing: 2px;
+  margin-bottom: 48px; font-style: italic;
+}
+.nav-links-row {
+  display: flex; justify-content: center; gap: 48px;
+  flex-wrap: wrap;
+}
+.nav-link {
+  text-decoration: none; color: var(--garastor-black);
+  font-size: 15px; letter-spacing: 3px; font-weight: 400;
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
+}
+.nav-link:hover { color: var(--garastor-gold); border-bottom-color: var(--garastor-gold); }
+.nav-link .nav-count {
+  display: block; font-size: 11px; letter-spacing: 2px;
+  color: var(--garastor-gold); margin-top: 4px;
+}
+
+/* ========== COLLECTION DISPLAY (image-heavy, minimal labels) ========== */
+.collection {
+  max-width: 1400px; margin: 0 auto; padding: 80px 40px 120px;
+}
+.collection-header {
+  text-align: center; margin-bottom: 56px;
+}
+.collection-header h2 {
+  font-size: clamp(24px, 3.5vw, 38px); font-weight: 300;
+  letter-spacing: 4px; margin-bottom: 12px; color: var(--garastor-black);
+}
+.collection-header .tagline {
+  font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--garastor-gold); margin-bottom: 16px; display: block;
+}
+.collection-header .summary {
+  max-width: 520px; margin: 0 auto;
+  font-size: 14px; color: #777; line-height: 1.7;
+  font-style: italic;
+}
+
+/* === Product Grid — fewer items, more impact === */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.product-card {
+  position: relative; overflow: hidden; border-radius: 1px;
+  background: var(--garastor-dark);
+}
+.product-card img {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+.product-card:hover img { transform: scale(1.05); opacity: 0.7; }
+.product-card .hover-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 16px 20px;
+  background: linear-gradient(0deg, rgba(26,26,26,0.9) 0%, transparent 100%);
+  color: #fff; font-size: 14px; letter-spacing: 2px;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.product-card:hover .hover-label { opacity: 1; }
+.hover-label .island {
+  display: block; font-size: 11px; color: var(--garastor-gold);
+  font-style: italic; letter-spacing: 1px; margin-top: 2px;
+}
+
+/* ========== FOOTER ========== */
+/* uses site-footer from css/style.css */
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .text-panel { padding: 120px 40px 60px; }
+}
+@media (max-width: 768px) {
+  .text-panel { padding: 100px 28px 50px; min-height: auto; }
+  .panel-inner h1 { font-size: 30px; letter-spacing: 3px; }
+  .panel-inner .subtitle { font-size: 15px; letter-spacing: 2px; }
+  .meditation-img { height: 50vh; }
+  .meditation-text { max-width: 85%; }
+  .meditation-text.top-left { top: 8%; left: 5%; }
+  .meditation-text.bottom-right { bottom: 8%; right: 5%; }
+  .meditation-text .quote { font-size: 16px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .collection { padding: 50px 20px 80px; }
+  .nav-links-row { gap: 28px; }
+}
+@media (max-width: 480px) {
+  .text-panel { padding: 80px 20px 40px; }
+  .panel-inner h1 { font-size: 24px; letter-spacing: 2px; }
+  .panel-inner .subtitle { font-size: 13px; letter-spacing: 1.5px; }
+  .panel-inner .desc { font-size: 13px; }
+  .product-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .meditation-img { height: 40vh; }
+  .nav-links-row { flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- -->
+<header class="site-header dark" style="position:absolute;top:0;left:0;right:0;z-index:10;background:transparent;">
+  <a href="index.html" class="header-logo" style="color:#FFF;">GARASTOR</a>
+  <nav class="main-nav">
+    <a href="products.html" style="color:rgba(255,255,255,0.85);">Products</a>
+    <a href="collections.html" style="color:rgba(255,255,255,0.85);">Collections</a>
+    <a href="brand-story.html" style="color:rgba(255,255,255,0.85);">Our Story</a>
+    <a href="lookbook.html" class="active" style="color:#FFF;">Gallery</a>
+    <a href="boutiques.html" style="color:rgba(255,255,255,0.85);">Factory</a>
+    <a href="journal.html" style="color:rgba(255,255,255,0.85);">Journal</a>
+    <a href="contact.html" style="color:rgba(255,255,255,0.85);">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu">
+  <a href="products.html">Products</a>
+  <a href="collections.html">Collections</a>
+  <a href="brand-story.html">Our Story</a>
+  <a href="lookbook.html">Gallery</a>
+  <a href="boutiques.html">Factory</a>
+  <a href="journal.html">Journal</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- -->
+<!-- PANEL 1 — La Forma-di-Vita (top-left standalone text, no overlay issue) -->
+<!-- -->
+<section class="text-panel">
+  <div class="panel-inner">
+    <h1>GARASTOR Gallery<br>La Forma-di-Vita</h1>
+    <p class="subtitle">Bare Life, Potentiality, and the Irrevocable:<br>The Floor as the Negative of Life</p>
+    <p class="desc">
+      Life is form, the floor is its vessel — every plank of oak is an inscription of a form-of-life.
+      In the fissure between potentiality and actuality, the wood remembers the echo of every footstep.
+      As <em>Agamben</em> declared: form-of-life is indivisible, it never separates from its own possibility.
+      The floor, too — within each grain is sealed the potentiality of a tree and the form it ultimately became.
+    </p>
+  </div>
+</section>
+
+<!-- -->
+<!-- MEDITATION 1 — Strip Plank / Augustine / Via Recta                      -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Sicily西西里/素月-1.jpg" alt="Via Recta">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text top-left">
+    <p class="quote">&ldquo;The straight grain does not ask to be understood. It simply runs — from root to crown, from birth to silence — like a prayer that has forgotten its words but remembers its direction.&rdquo;</p>
+    <p class="attribution">Via Recta · Strip Plank</p>
+    <p class="caption">The oak remembers the sun it grew toward. Every plank is a vector of light, frozen in wood.</p>
+  </div>
+</section>
+
+<!-- -->
+<!-- MEDITATION 2 — Chevron / Pseudo-Dionysius / Scala Paradisi              -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Salina萨利纳/1.jpg" alt="Scala Paradisi">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text bottom-right">
+    <p class="quote">&ldquo;Every fold is a negation that affirms. The chevron breaks the line not to destroy it — but to lift it. A geometry of ascent in which each angle whispers: <em>there is more</em>.&rdquo;</p>
+    <p class="attribution">Pseudo-Dionysius, <em>The Celestial Hierarchy</em> — Scala Paradisi</p>
+    <p class="caption">You do not walk upon a chevron floor. You rise through it — each step a rung, each seam a threshold between the visible and the invisible.</p>
+  </div>
+</section>
+
+<!-- -->
+<!-- MEDITATION 3 — Herringbone / Aquinas / Opus Dei                         -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/萨利纳/1.jpg" alt="Opus Dei">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text center">
+    <p class="quote">&ldquo;The weave is older than language. Before the first word, there was the interlacing of branches, the braid of roots beneath the soil. The herringbone floor is not decoration — it is memory made visible. A loom upon which the house breathes.&rdquo;</p>
+    <p class="attribution">Thomas Aquinas, <em>Summa Theologica</em> — Opus Dei</p>
+    <p class="caption">To walk upon woven oak is to participate in the oldest act of creation: the binding of one thing to another.</p>
+  </div>
+</section>
+
+<!-- -->
+<!-- MEDITATION 4 — Nature / Life / The Tree Remembers                       -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Budelli布德利/大地-1.jpg" alt="The Tree Remembers">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text top-left">
+    <p class="quote">&ldquo;A floor is not dead wood. It is a forest that learned to lie down without forgetting how to stand. The rings still count the seasons. The grain still holds the rain of a hundred winters. You are not walking on a surface — you are walking through time.&rdquo;</p>
+    <p class="attribution">GARASTOR — Naturphilosophie</p>
+    <p class="caption">Schelling wrote that nature is visible spirit. GARASTOR believes the floor is nature made intimate — the wilderness brought indoors, tamed not by force but by reverence.</p>
+  </div>
+</section>
+
+<!-- -->
+<!-- MEDITATION 5 — Deleuze / Merleau-Ponty / The Body on the Floor          -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Capri卡普里/岁月-1.jpg" alt="The Body and the Floor">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text bottom-right">
+    <p class="quote">&ldquo;The foot knows what the eye cannot see. Before architecture, before the wall, before the roof — there was the ground. And the body, bare, meeting it. The floor is the first architecture: the plane upon which life unfolds, the surface that receives every fall, every first step, every final stillness.&rdquo;</p>
+    <p class="attribution">Merleau-Ponty, <em>Phenomenology of Perception</em></p>
+    <p class="caption">The floor is not a thing we look at. It is a thing we live with — the silent witness of every intimacy, every solitude, every dance in the dark.</p>
+  </div>
+</section>
+
+<!-- -->
+<!-- SERIES NAVIGATION (compact)                                             -->
+<!-- -->
+<section class="series-nav">
+  <h2>Three Collections</h2>
+  <p class="nav-lede">Select a collection to explore the full range</p>
+  <div class="nav-links-row">
+    <a href="#collection-strip" class="nav-link">Via Recta<span class="nav-count">Strip Plank · 9 Models</span></a>
+    <a href="#collection-chevron" class="nav-link">Scala Paradisi<span class="nav-count">Chevron · 6 Models</span></a>
+    <a href="#collection-herringbone" class="nav-link">Opus Dei<span class="nav-count">Herringbone · 6 Models</span></a>
+  </div>
+</section>
+
+<!-- -->
+<!-- COLLECTION: Strip Plank / Via Recta                                     -->
+<!-- -->
+<section id="collection-strip" class="collection">
+  <div class="collection-header">
+    <span class="tagline">Via Recta · The Straight Path</span>
+    <h2>Strip Plank</h2>
+    <p class="summary">Augustine knew: the soul moves in a line. It does not wander — it is drawn. Each plank is a fragment of that drawing, a vector toward light. Nine islands, nine ways of being straight.</p>
+  </div>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Budelli布德利/大地-1.jpg" alt="Budelli" loading="lazy">
+      <div class="hover-label">Budelli<span class="island">Isola di Budelli</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Burano布拉诺/焦糖-1.jpg" alt="Burano" loading="lazy">
+      <div class="hover-label">Burano<span class="island">Isola di Burano</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Capri卡普里/岁月-1.jpg" alt="Capri" loading="lazy">
+      <div class="hover-label">Capri<span class="island">Isola di Capri</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Elba厄尔巴/青苔-1.jpg" alt="Elba" loading="lazy">
+      <div class="hover-label">Elba<span class="island">Isola d'Elba</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Levanzo莱万佐/初阳1.jpg" alt="Levanzo" loading="lazy">
+      <div class="hover-label">Levanzo<span class="island">Isola di Levanzo</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Lschia伊斯基亚/暮光-1.jpg" alt="Ischia" loading="lazy">
+      <div class="hover-label">Ischia<span class="island">Isola d'Ischia</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Murano穆拉诺/01.jpg" alt="Murano" loading="lazy">
+      <div class="hover-label">Murano<span class="island">Isola di Murano</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Palmarola帕尔马罗拉/远山-1.jpg" alt="Palmarola" loading="lazy">
+      <div class="hover-label">Palmarola<span class="island">Isola di Palmarola</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Sicily西西里/素月-1.jpg" alt="Sicily" loading="lazy">
+      <div class="hover-label">Sicily<span class="island">Isola di Sicilia</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- -->
+<!-- MEDITATION 6 — Between collections                                     -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Lipari利帕里/1.jpg" alt="Between Forms">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text center">
+    <p class="quote">&ldquo;Between the straight line and the woven field, there is the fold — the chevron — a geometry of becoming. It is neither path nor fabric. It is the moment of turning, the decision to rise.&rdquo;</p>
+    <p class="attribution">GARASTOR — Between Form and Form</p>
+  </div>
+</section>
+
+<!-- -->
+<!-- COLLECTION: Chevron / Scala Paradisi                                    -->
+<!-- -->
+<section id="collection-chevron" class="collection">
+  <div class="collection-header">
+    <span class="tagline">Scala Paradisi · The Celestial Ladder</span>
+    <h2>Chevron</h2>
+    <p class="summary">Pseudo-Dionysius described a ladder of light, each rung a negation that brings the soul closer to what cannot be named. The chevron is that ladder in oak — six islands, six ascents.</p>
+  </div>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Capraia卡普拉亚/1.jpg" alt="Capraia" loading="lazy">
+      <div class="hover-label">Capraia<span class="island">Isola di Capraia</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Giannutri詹努特里/1.jpg" alt="Giannutri" loading="lazy">
+      <div class="hover-label">Giannutri<span class="island">Isola di Giannutri</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Lipari利帕里/1.jpg" alt="Lipari" loading="lazy">
+      <div class="hover-label">Lipari<span class="island">Isola di Lipari</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Nisida尼西达/1.jpg" alt="Nisida" loading="lazy">
+      <div class="hover-label">Nisida<span class="island">Isola di Nisida</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Pianosa皮亚诺萨/1.jpg" alt="Pianosa" loading="lazy">
+      <div class="hover-label">Pianosa<span class="island">Isola di Pianosa</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/chevron/Salina萨利纳/1.jpg" alt="Salina" loading="lazy">
+      <div class="hover-label">Salina<span class="island">Isola di Salina</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- -->
+<!-- MEDITATION 7 — Heidegger / Dwelling / The Floor as Being                -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/Elba埃尔巴/1.jpg" alt="Dwelling">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text top-left">
+    <p class="quote">&ldquo;To dwell is to be placed. And to be placed is to stand upon something that holds. The floor is not beneath you — it is around you, the first condition of all inhabitation. Heidegger said: <em>Building is dwelling.</em> But before building, before dwelling — there is the laying of the ground. The floor is the original poem of space.&rdquo;</p>
+    <p class="attribution">Heidegger, <em>Building Dwelling Thinking</em></p>
+    <p class="caption">Every GARASTOR floor is an answer to the oldest human question: where do I belong?</p>
+  </div>
+</section>
+
+<!-- -->
+<!-- COLLECTION: Herringbone / Opus Dei                                      -->
+<!-- -->
+<section id="collection-herringbone" class="collection">
+  <div class="collection-header">
+    <span class="tagline">Opus Dei · The Divine Work</span>
+    <h2>Herringbone</h2>
+    <p class="summary">Aquinas saw the cosmos as a fabric — every thread a cause, every crossing a relation. The herringbone is theology in wood: six islands, six weaves of being.</p>
+  </div>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/Comacina科马奇纳/1.jpg" alt="Comacina" loading="lazy">
+      <div class="hover-label">Comacina<span class="island">Isola Comacina</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/Elba埃尔巴/1.jpg" alt="Elba" loading="lazy">
+      <div class="hover-label">Elba<span class="island">Isola d'Elba</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/Gorgona戈尔戈纳/1.jpg" alt="Gorgona" loading="lazy">
+      <div class="hover-label">Gorgona<span class="island">Isola di Gorgona</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/Lsola Madre马德雷/马德雷-1.jpg" alt="Isola Madre" loading="lazy">
+      <div class="hover-label">Isola Madre<span class="island">Isola Madre</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/Zannone赞诺内/进口人字拼-赞比诺-1.jpg" alt="Zannone" loading="lazy">
+      <div class="hover-label">Zannone<span class="island">Isola di Zannone</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/herringbone/萨利纳/1.jpg" alt="Salina" loading="lazy">
+      <div class="hover-label">Salina<span class="island">Isola di Salina</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- -->
+<!-- CLOSING MEDITATION                                                      -->
+<!-- -->
+<section class="meditation">
+  <img class="meditation-img" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/strip-plank/Murano穆拉诺/01.jpg" alt="Closing">
+  <div class="meditation-overlay"></div>
+  <div class="meditation-text bottom-right">
+    <p class="quote">&ldquo;In the end, the floor does not speak. It receives. Every fall of light, every bare foot, every child crawling toward the window — the floor holds it all without complaint. That is the dignity of wood: to be walked upon and never diminished, to grow quieter and more beautiful with every passage. A floor is not a surface. It is a life, lived horizontally.&rdquo;</p>
+    <p class="attribution">GARASTOR — La Forma-di-Vita</p>
+    <p class="caption">What you stand upon defines what you stand for.</p>
+  </div>
+</section>
+
+<!-- -->
+<footer class="site-footer"><div class="container">
+<div class="footer-grid">
+<div class="footer-brand"><h3 class="footer-logo">GARASTOR</h3><p><br>Since 1996<br></p></div>
+<div class="footer-nav"><h4>Explore</h4><a href="products.html">All Products</a><a href="collections.html">Collections</a><a href="lookbook.html">Gallery</a><a href="journal.html">Journal</a></div>
+<div class="footer-nav"><h4>Services</h4><a href="contact.html">Free Consultation</a><a href="contact.html">Sample Request</a><a href="boutiques.html">Showroom Booking</a><a href="contact.html">After-Sales</a></div>
+<div class="footer-nav"><h4>Brand</h4><a href="brand-story.html">Our Story</a><a href="boutiques.html">Factory</a><a href="contact.html">Contact Us</a></div>
+</div>
+<div class="footer-bottom"><p>&copy; 2026 GARASTOR. All rights reserved. | A House of JONHOS · Factory: Serbia · European Design</p></div>
+</div></footer>
+<script src="js/main.js"></script>
+<!-- 技术诚信声明 / Technische Transparenzerklärung:
+     网站架构、HTML结构、CSS布局均由本人亲自搭建。
+     JavaScript逻辑部分参考了AI建议（本人初学JS），但经过亲自调试和测试。
+     文案内容由AI辅助撰写（本人文学功底有限）。
+     Die Website-Architektur, HTML-Struktur und das CSS-Layout wurden eigenständig erstellt. 
+     Teile der JavaScript-Logik wurden mit KI-Hilfe entwickelt (der Betreiber ist JS-Anfänger), aber selbst getestet. 
+     Alle Texte wurden mit KI-Unterstützung verfasst. -->
+</body>
+</html>
