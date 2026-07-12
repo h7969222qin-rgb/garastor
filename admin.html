@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>GARASTOR — Admin Dashboard</title>
+<style>
+  :root{--gold:#b8874a;--black:#1e1b18;--cream:#f5f0eb;--white:#fff;--gray:#999;--border:#d4d4d0;--success:#27ae60;--danger:#c0392b;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--black);padding:1.5rem;max-width:1200px;margin:0 auto;}
+  h1{font-family:'Georgia',serif;font-size:1.8rem;font-weight:300;margin-bottom:0.25rem;}
+  h1 span{color:var(--gold);}
+  .sub{color:var(--gray);font-size:0.85rem;margin-bottom:1.5rem;}
+  .panel{background:var(--white);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem;}
+  .panel h2{font-size:1rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:10px 22px;font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;border:1px solid transparent;cursor:pointer;transition:all 0.25s;}
+  .btn-gold{background:var(--gold);color:#fff;border-color:var(--gold);}
+  .btn-gold:hover{background:transparent;color:var(--gold);}
+  .btn-green{background:var(--success);color:#fff;border-color:var(--success);}
+  .btn-green:hover{background:#219150;color:#fff;}
+  .btn-danger{background:transparent;color:var(--danger);border-color:var(--danger);}
+  .btn-danger:hover{background:var(--danger);color:#fff;}
+  .btn-outline{background:transparent;color:var(--black);border-color:var(--black);}
+  .btn-outline:hover{background:var(--black);color:#fff;}
+  .btn-sm{padding:6px 14px;font-size:0.7rem;}
+  .btns-row{display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  @media(max-width:700px){.form-row{grid-template-columns:1fr;}}
+  .form-group{display:flex;flex-direction:column;gap:0.25rem;margin-bottom:1rem;}
+  .form-group label{font-size:0.7rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--gray);}
+  .form-group input,.form-group select,.form-group textarea{padding:9px 11px;border:1px solid var(--border);font-size:0.85rem;outline:none;background:#fff;font-family:inherit;}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);}
+  .form-group textarea{min-height:200px;resize:vertical;line-height:1.6;}
+  .login-box{max-width:380px;margin:3rem auto;background:var(--white);border:1px solid var(--border);padding:2.5rem;text-align:center;}
+  .login-box h1{font-size:1.6rem;}
+  .login-box input{width:100%;}
+  .login-err{color:var(--danger);font-size:0.75rem;margin-top:0.5rem;min-height:1rem;}
+  .tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border);}
+  .tab{padding:0.75rem 1.5rem;cursor:pointer;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--gray);border-bottom:2px solid transparent;}
+  .tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+  .drop-zone{border:2px dashed var(--border);padding:1.5rem;text-align:center;color:var(--gray);cursor:pointer;transition:all 0.2s;font-size:0.8rem;}
+  .drop-zone:hover,.drop-zone.dragover{border-color:var(--gold);color:var(--gold);}
+  .img-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:0.5rem;margin-top:0.75rem;}
+  .img-preview{position:relative;border:1px solid var(--border);}
+  .img-preview img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+  .img-preview .num{position:absolute;top:2px;left:2px;background:var(--gold);color:#fff;font-size:0.65rem;padding:1px 5px;font-weight:600;}
+  .img-preview .rm{position:absolute;top:2px;right:2px;background:var(--danger);color:#fff;border:none;cursor:pointer;font-size:0.6rem;width:18px;height:18px;line-height:18px;text-align:center;padding:0;}
+  .log{background:var(--black);color:#0f0;font-family:'Cascadia Code','Fira Code',monospace;font-size:0.75rem;padding:1rem;max-height:200px;overflow-y:auto;margin-top:0.75rem;white-space:pre-wrap;line-height:1.5;display:none;}
+  .log .err{color:#f44;}.log .ok{color:#0f0;}.log .info{color:#ff0;}.log .dim{color:#666;}
+  .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--black);color:#fff;padding:0.9rem 1.3rem;font-size:0.8rem;z-index:999;opacity:0;transition:opacity 0.3s;max-width:380px;}
+  .toast.show{opacity:1;}.toast.success{border-left:3px solid var(--success);}.toast.error{border-left:3px solid var(--danger);}
+  .hidden{display:none!important;}
+  .hint{font-size:0.72rem;color:var(--gray);margin-top:0.4rem;line-height:1.5;}
+  .progress-bar{background:#eee;height:6px;margin:0.5rem 0;overflow:hidden;}
+  .progress-fill{background:var(--success);height:100%;width:0;transition:width 0.3s;}
+  details{margin-top:1rem;border:1px solid var(--border);padding:0.75rem;background:var(--cream);}
+  details summary{cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--gray);}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-box" id="loginView">
+  <h1>GARASTOR <span>Admin</span></h1>
+  <p class="sub" style="margin:0.5rem 0 1.5rem;">Visual dashboard — publish products & vlog</p>
+  <div class="form-group" style="margin:0;">
+    <input type="password" id="pwInput" placeholder="Enter admin password" autofocus>
+  </div>
+  <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:0.75rem;" id="loginBtn">Unlock Dashboard</button>
+  <div class="login-err" id="loginErr"></div>
+  <div style="font-size:0.75rem;color:var(--gray);margin-top:1rem;text-align:center;">
+    First time? <a id="showSetupLink" style="color:var(--gold);cursor:pointer;text-decoration:underline;">Generate token.enc here</a>
+  </div>
+</div>
+
+<!-- PRE-LOGIN SETUP (accessible without token.enc) -->
+<div class="panel hidden" id="preSetupView" style="max-width:560px;margin:1.5rem auto;">
+  <h2>First-Time Setup — Generate token.enc</h2>
+  <p class="hint" style="margin-bottom:1rem;">Enter a GitHub Personal Access Token (read/write to <code>contents</code> on this repo) and your chosen dashboard password. This encrypts the token with your password and downloads <code>token.enc</code>.</p>
+  <div class="form-group">
+    <label>GitHub Personal Access Token</label>
+    <input type="password" id="sToken2" placeholder="ghp_... or github_pat_...">
+  </div>
+  <div class="form-group">
+    <label>Dashboard Password (the one you'll type to log in)</label>
+    <input type="password" id="sPw2" placeholder="Choose a password">
+  </div>
+  <div class="btns-row">
+    <button class="btn btn-gold" id="sGenerate2">Generate &amp; Download token.enc</button>
+    <button class="btn btn-outline btn-sm" id="backToLogin">← Back to login</button>
+  </div>
+  <p class="hint" id="sStatus2" style="margin-top:0.75rem;"></p>
+  <details>
+    <summary>How to create the GitHub Token</summary>
+    <p class="hint" style="margin-top:0.75rem;">
+      1. GitHub → Settings → Developer settings → Personal access tokens → Fine-grained → Generate.<br>
+      2. Resource owner: your account. Repository: Only select → <code>garastro</code>.<br>
+      3. Permissions → Contents: Read and write. Metadata: Read-only.<br>
+      4. Generate, copy the token (<code>github_pat_...</code>), paste above.<br>
+      Or use a classic token with the <code>repo</code> scope.
+    </p>
+  </details>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashView" class="hidden">
+  <h1>GARASTOR <span>Admin</span></h1>
+  <div class="btns-row" style="justify-content:space-between;margin-bottom:1rem;">
+    <p class="sub" style="margin:0;">Publish to live site via GitHub — auto-deploys to garastor1.pages.dev</p>
+    <button class="btn btn-outline btn-sm" id="logoutBtn">Lock</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="product">Product</div>
+    <div class="tab" data-tab="vlog">Vlog / Article</div>
+    <div class="tab" data-tab="manage">Manage</div>
+    <div class="tab" data-tab="setup">Setup</div>
+  </div>
+
+  <!-- PRODUCT TAB -->
+  <div class="tab-pane" id="pane-product">
+    <div class="panel">
+      <h2>Add Product</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <select id="pCat">
+            <option value="herringbone">Herringbone</option>
+            <option value="chevron">Chevron</option>
+            <option value="strip-plank">Strip Plank</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Product Name (English, no spaces — e.g. Capri)</label>
+          <input type="text" id="pName" placeholder="Capri">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Chinese Name (optional, shown beside product)</label>
+        <input type="text" id="pNameCn" placeholder="Chinese display name (optional)">
+      </div>
+      <div class="form-group">
+        <label>Product Photos (drag in or click — first photo = 1.jpg)</label>
+        <div class="drop-zone" id="pDrop">Drag photos here, or click to choose</div>
+        <input type="file" id="pFile" accept="image/*" multiple class="hidden">
+        <div class="img-preview-grid" id="pPreview"></div>
+      </div>
+      <div class="btns-row">
+        <button class="btn btn-green" id="pPublish">★ Publish Product to Live</button>
+        <span style="font-size:0.75rem;color:var(--gray);" id="pStatus"></span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="pProgress"></div></div>
+      <div class="log" id="pLog"></div>
+    </div>
+  </div>
+
+  <!-- VLOG TAB -->
+  <div class="tab-pane hidden" id="pane-vlog">
+    <div class="panel">
+      <h2>Add Vlog / Article</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="vTitle" placeholder="Article title">
+        </div>
+        <div class="form-group">
+          <label>Date (display, e.g. 5 July 2026)</label>
+          <input type="text" id="vDate" placeholder="5 July 2026">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tag (e.g. Design Trends)</label>
+          <input type="text" id="vTag" placeholder="Design Trends">
+        </div>
+        <div class="form-group">
+          <label>Slug (English, no spaces — URL name, e.g. color-trends-2026)</label>
+          <input type="text" id="vSlug" placeholder="color-trends-2026">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Cover Photo (drag in or click)</label>
+        <div class="drop-zone" id="vDrop">Drag cover photo here, or click to choose</div>
+        <input type="file" id="vFile" accept="image/*" class="hidden">
+        <div class="img-preview-grid" id="vPreview"></div>
+      </div>
+      <div class="form-group">
+        <label>Excerpt (short summary shown on the journal list)</label>
+        <input type="text" id="vExcerpt" placeholder="One-line summary">
+      </div>
+      <div class="form-group">
+        <label>Body (paragraphs separated by blank lines; use [IMG] to insert a body photo)</label>
+        <textarea id="vBody" placeholder="First paragraph here.
+
+Second paragraph here.
+
+[IMG]
+
+Third paragraph after an image."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Body Photos (optional — for [IMG] placeholders, in order)</label>
+        <div class="drop-zone" id="vBodyDrop">Drag body photos here (optional)</div>
+        <input type="file" id="vBodyFile" accept="image/*" multiple class="hidden">
+        <div class="img-preview-grid" id="vBodyPreview"></div>
+      </div>
+      <div class="btns-row">
+        <button class="btn btn-green" id="vPublish">★ Publish Vlog to Live</button>
+        <span style="font-size:0.75rem;color:var(--gray);" id="vStatus"></span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="vProgress"></div></div>
+      <div class="log" id="vLog"></div>
+    </div>
+  </div>
+
+  <!-- MANAGE TAB -->
+  <div class="tab-pane hidden" id="pane-manage">
+    <div class="panel">
+      <h2>Manage Products</h2>
+      <p class="hint" style="margin-bottom:0.75rem;">Edit the Chinese display name, or soft-delete (removes the card from the live site; photos stay in the repo and the item can be restored). Deleting/editing commits immediately and redeploys.</p>
+      <div class="btns-row" style="margin-bottom:1rem;">
+        <button class="btn btn-outline btn-sm" id="mReload">↻ Reload list</button>
+        <span style="font-size:0.75rem;color:var(--gray);" id="mProdCount"></span>
+      </div>
+      <div id="mProdList" style="display:flex;flex-direction:column;gap:0.4rem;"></div>
+    </div>
+    <div class="panel">
+      <h2>Manage Vlog / Articles</h2>
+      <p class="hint" style="margin-bottom:0.75rem;">Edit title/date/tag, or soft-delete (article disappears from the journal list; the article page stays and can be restored).</p>
+      <div id="mVlogList" style="display:flex;flex-direction:column;gap:0.4rem;"></div>
+    </div>
+    <div class="log" id="mLog"></div>
+  </div>
+
+  <!-- SETUP TAB -->
+  <div class="tab-pane hidden" id="pane-setup">
+    <div class="panel">
+      <h2>First-Time Setup — Generate token.enc</h2>
+      <p class="hint" style="margin-bottom:1rem;">Run this once to enable login. Enter a GitHub Personal Access Token (with read/write to <code>contents</code> on this repo) and your chosen dashboard password. It encrypts the token with your password and downloads <code>token.enc</code>. Commit that file into the repo (root + dist).</p>
+      <div class="form-group">
+        <label>GitHub Personal Access Token</label>
+        <input type="password" id="sToken" placeholder="ghp_... or github_pat_...">
+      </div>
+      <div class="form-group">
+        <label>Dashboard Password (the one users type to log in)</label>
+        <input type="password" id="sPw" placeholder="Choose a password">
+      </div>
+      <div class="btns-row">
+        <button class="btn btn-gold" id="sGenerate">Generate &amp; Download token.enc</button>
+        <span style="font-size:0.75rem;color:var(--gray);" id="sStatus"></span>
+      </div>
+      <details>
+        <summary>How to create the GitHub Token</summary>
+        <p class="hint" style="margin-top:0.75rem;">
+          1. Go to GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate.<br>
+          2. Resource owner: your account. Repository access: Only select repositories → <code>garastro</code>.<br>
+          3. Permissions → Repository permissions → Contents: Read and write. Metadata: Read-only.<br>
+          4. Generate, copy the token (starts with <code>github_pat_</code>), paste above.<br>
+          Or use a classic token with the <code>repo</code> scope.
+        </p>
+      </details>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+//═══════════════════════════════════════════════════════════
+// GARASTOR Admin — pure front-end dashboard
+// Commits to GitHub via Git Data API (token decrypted from token.enc)
+//═══════════════════════════════════════════════════════════
+'use strict';
+
+const OWNER = 'h7969222qin-rgb';
+const REPO = 'garastor';
+const BRANCH = 'main';
+const TOKEN_FILE = 'token.enc';
+// Fixed salt for PBKDF2 (protecting a repo-scoped token — acceptable).
+const SALT = 'garastro-admin-salt-v1';
+const PBKDF2_ITER = 100000;
+
+const $ = id => document.getElementById(id);
+let GH_TOKEN = null; // decrypted token, kept in memory only
+
+//───────────────────────────────────────────────────────────
+// Crypto: derive key, encrypt/decrypt (Web Crypto AES-GCM)
+//───────────────────────────────────────────────────────────
+async function deriveKey(password) {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: enc.encode(SALT), iterations: PBKDF2_ITER, hash: 'SHA-256' },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt']
+  );
+}
+function bufToB64(buf) { return btoa(String.fromCharCode(...new Uint8Array(buf))); }
+function b64ToBuf(b64) { return Uint8Array.from(atob(b64), c => c.charCodeAt(0)).buffer; }
+
+async function encryptToken(token, password) {
+  const key = await deriveKey(password);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const enc = new TextEncoder();
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(token));
+  return JSON.stringify({ iv: bufToB64(iv), data: bufToB64(ct) });
+}
+async function decryptToken(blobStr, password) {
+  const blob = JSON.parse(blobStr);
+  const key = await deriveKey(password);
+  const iv = new Uint8Array(b64ToBuf(blob.iv));
+  const ct = b64ToBuf(blob.data);
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+  return new TextDecoder().decode(pt);
+}
+
+//───────────────────────────────────────────────────────────
+// LOGIN
+//───────────────────────────────────────────────────────────
+async function doLogin() {
+  const pw = $('pwInput').value;
+  if (!pw) { $('loginErr').textContent = 'Please enter the password.'; return; }
+  try {
+    const r = await fetch(TOKEN_FILE, { cache: 'no-store' });
+    if (!r.ok) throw new Error('token.enc not found (run Setup first, commit the file)');
+    const blobStr = await r.text();
+    GH_TOKEN = await decryptToken(blobStr, pw);
+    if (!GH_TOKEN) throw new Error('Decryption returned empty');
+    $('loginErr').textContent = '';
+    $('loginView').classList.add('hidden');
+    $('dashView').classList.remove('hidden');
+    toast('Unlocked', 'success');
+  } catch (e) {
+    GH_TOKEN = null;
+    $('loginErr').textContent = 'Wrong password, or token.enc missing/corrupt.';
+    console.error(e);
+  }
+}
+$('loginBtn').addEventListener('click', doLogin);
+$('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+$('logoutBtn').addEventListener('click', () => { GH_TOKEN = null; location.reload(); });
+
+//───────────────────────────────────────────────────────────
+// TABS
+//───────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+    $('pane-' + t.dataset.tab).classList.remove('hidden');
+  });
+});
+
+//───────────────────────────────────────────────────────────
+// SETUP: generate token.enc
+//───────────────────────────────────────────────────────────
+$('sGenerate').addEventListener('click', async () => {
+  const token = $('sToken').value.trim();
+  const pw = $('sPw').value;
+  if (!token) { toast('Enter the GitHub token', 'error'); return; }
+  if (!pw) { toast('Enter a password', 'error'); return; }
+  try {
+    const blob = await encryptToken(token, pw);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([blob], { type: 'application/json' }));
+    a.download = 'token.enc';
+    a.click();
+    $('sStatus').textContent = 'Downloaded. Put token.enc in repo root AND dist/, then commit & push.';
+    toast('token.enc downloaded', 'success');
+  } catch (e) { toast('Generate failed: ' + e.message, 'error'); }
+});
+
+// Pre-login setup (reachable WITHOUT token.enc, in case it's missing)
+$('showSetupLink').addEventListener('click', () => {
+  $('loginView').classList.add('hidden');
+  $('preSetupView').classList.remove('hidden');
+});
+$('backToLogin').addEventListener('click', () => {
+  $('preSetupView').classList.add('hidden');
+  $('loginView').classList.remove('hidden');
+});
+$('sGenerate2').addEventListener('click', async () => {
+  const token = $('sToken2').value.trim();
+  const pw = $('sPw2').value;
+  if (!token) { toast('Enter the GitHub token', 'error'); return; }
+  if (!pw) { toast('Enter a password', 'error'); return; }
+  try {
+    const blob = await encryptToken(token, pw);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([blob], { type: 'application/json' }));
+    a.download = 'token.enc';
+    document.body.appendChild(a); a.click(); a.remove();
+    $('sStatus2').textContent = '✓ Downloaded token.enc. Now: put it in repo ROOT and dist/, commit & push, then come back and log in with your password.';
+    toast('token.enc downloaded', 'success');
+  } catch (e) { toast('Generate failed: ' + e.message, 'error'); }
+});
+
+//───────────────────────────────────────────────────────────
+// IMAGE DROP HELPERS (shared)
+//───────────────────────────────────────────────────────────
+let pImages = [], vCover = [], vBodyImages = [];
+function setupDrop(zoneId, fileId, arr, previewId, multi) {
+  const zone = $(zoneId), file = $(fileId), prev = $(previewId);
+  zone.addEventListener('click', () => file.click());
+  file.addEventListener('change', e => { addImg(arr, Array.from(e.target.files), prev, multi); file.value = ''; });
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); const fs = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')); if (fs.length) addImg(arr, fs, prev, multi); });
+}
+function addImg(arr, files, prev, multi) {
+  if (multi) arr.push(...files); else { arr.length = 0; arr.push(files[0]); }
+  renderPrev(arr, prev, multi);
+}
+function prevEl(prev) { return typeof prev === 'string' ? document.getElementById(prev) : prev; }
+function renderPrev(arr, prev, multi) {
+  const el = prevEl(prev);
+  if (!el) return;
+  el.innerHTML = arr.map((f, i) => {
+    const url = URL.createObjectURL(f);
+    return '<div class="img-preview"><span class="num">' + (i + 1) + '</span><button class="rm" data-i="' + i + '">×</button><img src="' + url + '"></div>';
+  }).join('');
+  el.querySelectorAll('.rm').forEach(b => b.addEventListener('click', function () {
+    arr.splice(parseInt(this.dataset.i), 1); renderPrev(arr, prev, multi);
+  }));
+}
+setupDrop('pDrop', 'pFile', pImages, 'pPreview', true);
+setupDrop('vDrop', 'vFile', vCover, 'vPreview', false);
+setupDrop('vBodyDrop', 'vBodyFile', vBodyImages, 'vBodyPreview', true);
+
+//───────────────────────────────────────────────────────────
+// FILE → BASE64
+//───────────────────────────────────────────────────────────
+function fileToB64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => { const s = r.result; res(s.substring(s.indexOf(',') + 1)); };
+    r.onerror = rej; r.readAsDataURL(file);
+  });
+}
+async function imgFileToJpegB64(file, idx) {
+  // Redraw onto canvas → jpeg (consistent format), return base64 without prefix
+  return new Promise((res, rej) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      const x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+      x.drawImage(img, 0, 0);
+      c.toBlob(b => {
+        const r2 = new FileReader();
+        r2.onload = () => { const s = r2.result; res(s.substring(s.indexOf(',') + 1)); };
+        r2.onerror = rej; r2.readAsDataURL(b);
+      }, 'image/jpeg', 0.9);
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('Cannot read ' + file.name)); };
+    img.src = url;
+  });
+}
+
+//───────────────────────────────────────────────────────────
+// GITHUB GIT DATA API — one atomic commit with multiple files
+//───────────────────────────────────────────────────────────
+async function gh(path, method, body) {
+  const r = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + path, {
+    method, headers: {
+      'Authorization': 'Bearer ' + GH_TOKEN,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    }, body: body ? JSON.stringify(body) : undefined
+  });
+  if (!r.ok) {
+    let msg = 'HTTP ' + r.status;
+    try { const j = await r.json(); msg += ' ' + (j.message || ''); } catch {}
+    throw new Error(msg);
+  }
+  return r.json();
+}
+async function fetchFile(path) {
+  // returns { content: string(UTF-8), sha } via raw or contents
+  const r = await fetch('https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/' + path, { cache: 'no-store' });
+  if (!r.ok) throw new Error('Cannot fetch ' + path + ' (' + r.status + ')');
+  return await r.text();
+}
+async function commitFiles(files, message, logFn, progressFn) {
+  // files: [{path, content, encoding}] or [{path, delete:true}] to delete a file
+  logFn('Fetching branch ref...', 'dim');
+  const ref = await gh('/git/refs/heads/' + BRANCH, 'GET');
+  const headSha = ref.object.sha;
+  const commitObj = await gh('/git/commits/' + headSha, 'GET');
+  const baseTree = commitObj.tree.sha;
+  let done = 0; progressFn(10);
+  const tree = [];
+  for (const f of files) {
+    if (f.delete) {
+      // delete file from tree: sha null + type blob
+      tree.push({ path: f.path, mode: '100644', type: 'blob', sha: null });
+    } else {
+      tree.push({ path: f.path, mode: '100644', type: 'blob', content: f.content, encoding: f.encoding });
+    }
+    done++; progressFn(10 + Math.round((done / files.length) * 60));
+  }
+  logFn('Creating tree with ' + files.length + ' file(s)...', 'dim');
+  const newTree = await gh('/git/trees', 'POST', { base_tree: baseTree, tree });
+  logFn('Creating commit...', 'dim'); progressFn(80);
+  const newCommit = await gh('/git/commits', 'POST', { message, tree: newTree.sha, parents: [headSha] });
+  logFn('Updating ' + BRANCH + ' ref...', 'dim'); progressFn(90);
+  await gh('/git/refs/heads/' + BRANCH, 'PATCH', { sha: newCommit.sha, force: false });
+  progressFn(100);
+  logFn('✓ Committed: ' + message, 'ok');
+  return newCommit.sha;
+}
+
+//───────────────────────────────────────────────────────────
+// PRODUCT PUBLISH
+//───────────────────────────────────────────────────────────
+const CATS = ['herringbone', 'chevron', 'strip-plank'];
+function validName(s) { return /^[A-Za-z0-9][A-Za-z0-9-]{0,63}$/.test(s); }
+
+//───────────────────────────────────────────────────────────
+// MANAGE — list, edit, soft-delete, restore
+//───────────────────────────────────────────────────────────
+const TRASH_FILE = 'admin-trash.json';
+
+// Wire the Manage tab: load lists when the tab is first shown.
+document.querySelectorAll('.tab').forEach(t => {
+  const orig = t.onclick;
+  t.addEventListener('click', () => { if (t.dataset.tab === 'manage') loadManageLists(); });
+});
+$('mReload').addEventListener('click', loadManageLists);
+
+async function loadTrash() {
+  try { return JSON.parse(await fetchFile(TRASH_FILE)); }
+  catch { return { products: [], vlogs: [] }; }
+}
+async function loadManageLists() {
+  $('mLog').style.display = 'none';
+  $('mProdList').innerHTML = '<div class="hint">Loading products…</div>';
+  $('mVlogList').innerHTML = '<div class="hint">Loading articles…</div>';
+  try { await renderProdList(); } catch (e) { $('mProdList').innerHTML = '<div class="hint" style="color:var(--danger);">' + escHtml(e.message) + '</div>'; }
+  try { await renderVlogList(); } catch (e) { $('mVlogList').innerHTML = '<div class="hint" style="color:var(--danger);">' + escHtml(e.message) + '</div>'; }
+}
+
+async function renderProdList() {
+  const data = JSON.parse(await fetchFile('products-data.json'));
+  const trash = await loadTrash();
+  const trashCodes = new Set((trash.products || []).map(p => p.cat + '/' + p.code));
+  let total = 0, live = 0, trashed = 0;
+  let html = '';
+  CATS.forEach(slug => {
+    const cat = data.categories.find(c => c.slug === slug);
+    (cat && cat.products ? cat.products : []).forEach(p => {
+      total++; live++;
+      html += prodRow(slug, p, false);
+    });
+  });
+  (trash.products || []).forEach(p => { total++; trashed++; html += prodRow(p.cat, p, true); });
+  if (!html) html = '<div class="hint">No products.</div>';
+  $('mProdList').innerHTML = html;
+  $('mProdCount').textContent = total + ' total · ' + live + ' live · ' + trashed + ' hidden';
+  bindProdRows();
+}
+
+function prodRow(slug, p, isTrash) {
+  const label = p.code + (p.nameCn ? ' ' + p.nameCn : '');
+  const tag = isTrash ? '<span style="color:var(--danger);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;">hidden</span> ' : '';
+  return '<div class="m-row" style="display:flex;gap:0.5rem;align-items:center;padding:0.5rem;border:1px solid var(--border);background:#fff;">' +
+    '<img src="https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/images/products/' + slug + '/' + p.code + '/1.jpg" style="width:42px;height:42px;object-fit:cover;border:1px solid var(--border);" onerror="this.style.visibility=\'hidden\'">' +
+    '<div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:0.85rem;">' + tag + escHtml(label) + '</div>' +
+    '<div style="font-size:0.7rem;color:var(--gray);">' + slug + ' · ' + (p.images || 0) + ' photos</div></div>' +
+    (isTrash
+      ? '<button class="btn btn-green btn-sm m-restore" data-cat="' + slug + '" data-code="' + escAttr(p.code) + '">Restore</button>' +
+        '<button class="btn btn-danger btn-sm m-purge" data-cat="' + slug + '" data-code="' + escAttr(p.code) + '">Purge</button>'
+      : '<button class="btn btn-outline btn-sm m-edit" data-cat="' + slug + '" data-code="' + escAttr(p.code) + '">Edit</button>' +
+        '<button class="btn btn-danger btn-sm m-del" data-cat="' + slug + '" data-code="' + escAttr(p.code) + '">Delete</button>') +
+    '</div>';
+}
+
+function bindProdRows() {
+  $('mProdList').querySelectorAll('.m-edit').forEach(b => b.addEventListener('click', () => editProductReal(b.dataset.cat, b.dataset.code)));
+  $('mProdList').querySelectorAll('.m-del').forEach(b => b.addEventListener('click', () => deleteProduct(b.dataset.cat, b.dataset.code)));
+  $('mProdList').querySelectorAll('.m-restore').forEach(b => b.addEventListener('click', () => restoreProduct(b.dataset.cat, b.dataset.code)));
+  $('mProdList').querySelectorAll('.m-purge').forEach(b => b.addEventListener('click', () => purgeProduct(b.dataset.cat, b.dataset.code)));
+}
+
+async function readCatalogAndHtml() {
+  const data = JSON.parse(await fetchFile('products-data.json'));
+  const html = await fetchFile('products.html');
+  return { data, html };
+}
+function recompute(data) {
+  let tP = 0, tI = 0;
+  data.categories.forEach(c => { c.productCount = (c.products || []).length; c.imageCount = (c.products || []).reduce((s, p) => s + (p.images || 0), 0); tP += c.productCount; tI += c.imageCount; });
+  data.totalProducts = tP; data.totalImages = tI;
+}
+
+function editProduct(cat, code) { editProductReal(cat, code); }
+
+// (editProduct real impl)
+async function editProductReal(cat, code) {
+  try {
+    const { data, html } = await readCatalogAndHtml();
+    const c = data.categories.find(c => c.slug === cat);
+    const p = c && c.products.find(x => x.code === code);
+    if (!p) { toast('Product not found', 'error'); return; }
+    const newNameCn = prompt('Chinese display name (leave blank to remove):', p.nameCn || '');
+    if (newNameCn === null) return;
+    p.nameCn = newNameCn.trim();
+    recompute(data);
+    const newHtml = rebuildProductsHtml(html, data);
+    log('mLog', 'Editing ' + code + '…', 'info'); $('mLog').style.display = 'block';
+    await commitFiles([
+      { path: 'products-data.json', content: JSON.stringify(data, null, 2), encoding: 'utf-8' },
+      { path: 'products.html', content: newHtml, encoding: 'utf-8' }
+    ], 'Edit product: ' + code, (m, c) => log('mLog', m, c), p => {});
+    toast('Saved. Site redeploys in ~1min.', 'success');
+    await renderProdList();
+  } catch (e) { log('mLog', 'ERROR: ' + e.message, 'err'); toast(e.message, 'error'); }
+}
+
+async function deleteProduct(cat, code) {
+  if (!confirm('Hide "' + code + '" from the live site? Photos stay; you can restore later.')) return;
+  try {
+    const { data, html } = await readCatalogAndHtml();
+    const c = data.categories.find(c => c.slug === cat);
+    if (!c) throw new Error('Category not found');
+    const idx = (c.products || []).findIndex(p => p.code === code);
+    if (idx === -1) throw new Error('Product not found');
+    const removed = c.products.splice(idx, 1)[0];
+    recompute(data);
+    const newHtml = rebuildProductsHtml(html, data);
+    const trash = await loadTrash();
+    if (!trash.products) trash.products = [];
+    trash.products.push({ cat, code: removed.code, nameCn: removed.nameCn, images: removed.images, relativePath: removed.relativePath, deletedAt: new Date().toISOString() });
+    log('mLog', 'Hiding ' + code + '…', 'info'); $('mLog').style.display = 'block';
+    await commitFiles([
+      { path: 'products-data.json', content: JSON.stringify(data, null, 2), encoding: 'utf-8' },
+      { path: 'products.html', content: newHtml, encoding: 'utf-8' },
+      { path: TRASH_FILE, content: JSON.stringify(trash, null, 2), encoding: 'utf-8' }
+    ], 'Hide product: ' + code, (m, c) => log('mLog', m, c), p => {});
+    toast('Hidden. Site redeploys in ~1min.', 'success');
+    await renderProdList();
+  } catch (e) { log('mLog', 'ERROR: ' + e.message, 'err'); toast(e.message, 'error'); }
+}
+
+async function restoreProduct(cat, code) {
+  try {
+    const { data, html } = await readCatalogAndHtml();
+    const trash = await loadTrash();
+    const idx = (trash.products || []).findIndex(p => p.cat === cat && p.code === code);
+    if (idx === -1) throw new Error('Not in trash');
+    const item = trash.products.splice(idx, 1)[0];
+    let c = data.categories.find(c => c.slug === cat);
+    if (!c) { c = { slug: cat, nameEn: cat, nameZh: cat, products: [] }; data.categories.push(c); }
+    if (!c.products) c.products = [];
+    c.products.push({ code: item.code, nameCn: item.nameCn || '', images: item.images, firstImg: 1, relativePath: item.relativePath || (cat + '/' + item.code) });
+    recompute(data);
+    const newHtml = rebuildProductsHtml(html, data);
+    log('mLog', 'Restoring ' + code + '…', 'info'); $('mLog').style.display = 'block';
+    await commitFiles([
+      { path: 'products-data.json', content: JSON.stringify(data, null, 2), encoding: 'utf-8' },
+      { path: 'products.html', content: newHtml, encoding: 'utf-8' },
+      { path: TRASH_FILE, content: JSON.stringify(trash, null, 2), encoding: 'utf-8' }
+    ], 'Restore product: ' + code, (m, c) => log('mLog', m, c), p => {});
+    toast('Restored.', 'success');
+    await renderProdList();
+  } catch (e) { log('mLog', 'ERROR: ' + e.message, 'err'); toast(e.message, 'error'); }
+}
+
+// Purge = remove from trash ONLY (photos already stayed; this just drops the record)
+async function purgeProduct(cat, code) {
+  if (!confirm('Remove "' + code + '" from the hidden list? (Photos remain in the repo; the item can no longer be restored from here.)')) return;
+  try {
+    const trash = await loadTrash();
+    trash.products = (trash.products || []).filter(p => !(p.cat === cat && p.code === code));
+    log('mLog', 'Purging ' + code + ' from trash…', 'info'); $('mLog').style.display = 'block';
+    await commitFiles([{ path: TRASH_FILE, content: JSON.stringify(trash, null, 2), encoding: 'utf-8' }], 'Purge trash record: ' + code, (m, c) => log('mLog', m, c), p => {});
+    toast('Purged from trash.', 'success');
+    await renderProdList();
+  } catch (e) { log('mLog', 'ERROR: ' + e.message, 'err'); toast(e.message, 'error'); }
+}
+
+// ---------- VLOG manage ----------
+async function renderVlogList() {
+  const journalHtml = await fetchFile('journal.html');
+  const articles = parseAllArticles(journalHtml);
+  const trash = await loadTrash();
+  const trashSlugs = new Set((trash.vlogs || []).map(v => v.slug));
+  let html = '';
+  articles.forEach(a => { html += vlogRow(a, false); });
+  (trash.vlogs || []).forEach(v => { html += vlogRow({ slug: v.slug, title: v.title, tag: v.tag, date: v.date, img: v.img }, true); });
+  if (!html) html = '<div class="hint">No articles.</div>';
+  $('mVlogList').innerHTML = html;
+  bindVlogRows();
+}
+
+function parseAllArticles(html) {
+  const start = html.indexOf('var allArticles = [');
+  const end = html.indexOf('];', start);
+  if (start === -1 || end === -1) return [];
+  const arrStr = html.substring(start + 'var allArticles = ['.length, end);
+  // match each { slug: '...', img: '...', tag: '...', title: '...', date: '...' }
+  const re = /\{\s*slug:\s*'([^']*)'\s*,\s*img:\s*'([^']*)'\s*,\s*tag:\s*'([^']*)'\s*,\s*title:\s*'([^']*)'\s*,\s*date:\s*'([^']*)'\s*\}/g;
+  const out = []; let m;
+  while ((m = re.exec(arrStr)) !== null) out.push({ slug: m[1], img: m[2], tag: m[3], title: m[4], date: m[5] });
+  return out;
+}
+
+function vlogRow(a, isTrash) {
+  const tag = isTrash ? '<span style="color:var(--danger);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;">hidden</span> ' : '';
+  return '<div class="m-row" style="display:flex;gap:0.5rem;align-items:center;padding:0.5rem;border:1px solid var(--border);background:#fff;">' +
+    '<img src="https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/' + a.img + '" style="width:42px;height:42px;object-fit:cover;border:1px solid var(--border);" onerror="this.style.visibility=\'hidden\'">' +
+    '<div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:0.85rem;">' + tag + escHtml(a.title) + '</div>' +
+    '<div style="font-size:0.7rem;color:var(--gray);">' + escHtml(a.tag || '') + ' · ' + escHtml(a.date || '') + ' · ' + escHtml(a.slug) + '</div></div>' +
+    (isTrash
+      ? '<button class="btn btn-green btn-sm mv-restore" data-slug="' + escAttr(a.slug) + '">Restore</button>'
+      : '<button class="btn btn-outline btn-sm mv-edit" data-slug="' + escAttr(a.slug) + '">Edit</button>' +
+        '<button class="btn btn-danger btn-sm mv-del" data-slug="' + escAttr(a.slug) + '">Delete</button>') +
+    '</div>';
+}
+
+function bindVlogRows() {
+  $('mVlogList').querySelectorAll('.mv-edit').forEach(b => b.addEventListener('click', () => editVlog(b.dataset.slug)));
+  $('mVlogList').querySelectorAll('.mv-del').forEach(b => b.addEventListener('click', () => deleteVlog(b.dataset.slug)));
+  $('mVlogList').querySelectorAll('.mv-restore').forEach(b => b.addEventListener('click', () => restoreVlog(b.dataset.slug)));
+}
+
+function removeArticleFromHtml(html, slug) {
+  // remove the { slug: '<slug>', ... } line from allArticles
+  const re = new RegExp("\\n?\\s*\\{\\s*slug:\\s*'" + slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + "'[^}]*\\},?", 'g');
+  return html.replace(re, '');
+}
+function insertArticle(html, a) {
+  const newEntry = "  { slug: '" + a.slug + "', img: '" + a.img + "', tag: '" + escHtml(a.tag).replace(/'/g, "\\'") + "', title: '" + escHtml(a.title).replace(/'/g, "\\'") + "', date: '" + escHtml(a.date) + "' }";
+  const arrStart = html.indexOf('var allArticles = [');
+  if (arrStart === -1) throw new Error('Cannot find allArticles in journal.html');
+  const insertPos = html.indexOf('[', arrStart) + 1;
+  return html.substring(0, insertPos) + '\n' + newEntry + ',' + html.substring(insertPos);
+}
+
+async function editVlog(slug) {
+  try {
+    const html = await fetchFile('journal.html');
+    const articles = parseAllArticles(html);
+    const a = articles.find(x => x.slug === slug);
+    if (!a) { toast('Article not found', 'error'); return; }
+    const newTitle = prompt('Title:', a.title);
+    if (newTitle === null) return;
+    const newTag = prompt('Tag:', a.tag);
+    if (newTag === null) return;
+    const newDate = prompt('Date (display):', a.date);
+    if (newDate === null) return;
+    let out = removeArticleFromHtml(html, slug);
+    out = insertArticle(out, { slug: a.slug, img: a.img, tag: newTag, title: newTitle, date: newDate });
+    // also update the article page title/tag/date if exists
+    let fileArticle = null;
+    try {
+      const art = await fetchFile('journal/' + slug + '.html');
+      fileArticle = { path: 'journal/' + slug + '.html', content: patchArticlePage(art, newTitle, newTag, newDate), encoding: 'utf-8' };
+    } catch {}
+    log('mLog', 'Editing article ' + slug + '…', 'info'); $('mLog').style.display = 'block';
+    const files = [{ path: 'journal.html', content: out, encoding: 'utf-8' }];
+    if (fileArticle) files.push(fileArticle);
+    await commitFiles(files, 'Edit article: ' + slug, (m, c) => log('mLog', m, c), p => {});
+    toast('Saved. Site redeploys in ~1min.', 'success');
+    await renderVlogList();
+  } catch (e) { log('mLog', 'ERROR: ' + e.message, 'err'); toast(e.message, 'error'); }
+}
+function patchArticlePage(html, title, tag, date) {
+  let out = html.replace(/<title>[^<]*<\/title>/, '<title>' + escHtml(title) + ' — GARASTOR</title>');
+  out = out.replace(/<h1>[^<]*<\/h1>/, '<h1>' + escHtml(title) + '</h1>');
+  return out;
+}
+
+async function deleteVlog(slug) {
+  if (!confirm('Hide article "' + slug + '" from the journal list? The article page stays and can be restored.')) return;
+  try {
+    const html = await fetchFile('journal.html');
+    const articles = parseAllArticles(html);
+    const a = articles.find(x => x.slug === slug);
+    if (!a) { toast('Article not found', 'error'); return; }
+    const out = removeArticleFromHtml(html, slug);
+    const trash = await loadTrash();
+    if (!trash.vlogs) trash.vlogs = [];
+    trash.vlogs.push({ slug: a.slug, title: a.title, tag: a.tag, date: a.date, img: a.img, deletedAt: new Date().toISOString() });
+    log('mLog', 'Hiding article ' + slug + '…', 'info'); $('mLog').style.display = 'block';
+    await commitFiles([
+      { path: 'journal.html', content: out, encoding: 'utf-8' },
+      { path: TRASH_FILE, content: JSON.stringify(trash, null, 2), encoding: 'utf-8' }
+    ], 'Hide article: ' + slug, (m, c) => log('mLog', m, c), p => {});
+    toast('Hidden. Site redeploys in ~1min.', 'success');
+    await renderVlogList();
+  } catch (e) { log('mLog', 'ERROR: ' + e.message, 'err'); toast(e.message, 'error'); }
+}
+
+async function restoreVlog(slug) {
+  try {
+    const html = await fetchFile('journal.html');
+    const trash = await loadTrash();
+    const idx = (trash.vlogs || []).findIndex(v => v.slug === slug);
+    if (idx === -1) throw new Error('Not in trash');
+    const a = trash.vlogs.splice(idx, 1)[0];
+    const out = insertArticle(html, a);
+    log('mLog', 'Restoring article ' + slug + '…', 'info'); $('mLog').style.display = 'block';
+    await commitFiles([
+      { path: 'journal.html', content: out, encoding: 'utf-8' },
+      { path: TRASH_FILE, content: JSON.stringify(trash, null, 2), encoding: 'utf-8' }
+    ], 'Restore article: ' + slug, (m, c) => log('mLog', m, c), p => {});
+    toast('Restored.', 'success');
+    await renderVlogList();
+  } catch (e) { log('mLog', 'ERROR: ' + e.message, 'err'); toast(e.message, 'error'); }
+}
+// add a danger button style + .m-row img fallback
+
+
+$('pPublish').addEventListener('click', async () => {
+  const cat = $('pCat').value, name = $('pName').value.trim(), nameCn = $('pNameCn').value.trim();
+  if (!name) { toast('Enter product name', 'error'); return; }
+  if (!validName(name)) { toast('Name: English letters/numbers/hyphen only', 'error'); return; }
+  if (pImages.length === 0) { toast('Add at least one photo', 'error'); return; }
+  const logFn = (m, c) => log('pLog', m, c);
+  const prog = p => $('pProgress').style.width = p + '%';
+  $('pLog').style.display = 'block'; $('pLog').innerHTML = '';
+  $('pStatus').textContent = 'Publishing...';
+  try {
+    // 1. fetch current products-data.json
+    logFn('Reading current catalog...', 'dim');
+    let data;
+    try { data = JSON.parse(await fetchFile('products-data.json')); }
+    catch (e) {
+      toast('Cannot read products-data.json from repo. Make sure it exists.', 'error');
+      logFn('ERROR: ' + e.message, 'err'); return;
+    }
+    // 2. fetch current products.html
+    logFn('Reading current products.html...', 'dim');
+    const curHtml = await fetchFile('products.html');
+
+    // 3. check duplicate, add product
+    let catObj = data.categories.find(c => c.slug === cat);
+    if (!catObj) { catObj = { slug: cat, nameEn: cat, products: [] }; data.categories.push({}); Object.assign(catObj, { slug: cat, nameEn: cat, nameZh: cat, products: [] }); }
+    if (!catObj.products) catObj.products = [];
+    if (catObj.products.find(p => p.code === name)) { toast('Product "' + name + '" already exists', 'error'); return; }
+    const imgCount = pImages.length;
+    catObj.products.push({ code: name, nameCn: nameCn || '', images: imgCount, firstImg: 1, relativePath: cat + '/' + name });
+    // recompute
+    let tP = 0, tI = 0;
+    data.categories.forEach(c => { c.productCount = (c.products || []).length; c.imageCount = (c.products || []).reduce((s, p) => s + (p.images || 0), 0); tP += c.productCount; tI += c.imageCount; });
+    data.totalProducts = tP; data.totalImages = tI;
+
+    // 4. convert images to jpeg base64
+    const files = [];
+    for (let i = 0; i < pImages.length; i++) {
+      const b64 = await imgFileToJpegB64(pImages[i], i);
+      files.push({ path: 'images/products/' + cat + '/' + name + '/' + (i + 1) + '.jpg', content: b64, encoding: 'base64' });
+      prog(Math.round((i + 1) / (pImages.length + 2) * 40));
+    }
+    // 5. new products-data.json
+    files.push({ path: 'products-data.json', content: JSON.stringify(data, null, 2), encoding: 'utf-8' });
+    // 6. rewrite products.html with the new product card inserted
+    const newHtml = rebuildProductsHtml(curHtml, data);
+    files.push({ path: 'products.html', content: newHtml, encoding: 'utf-8' });
+
+    await commitFiles(files, 'Add product: ' + name + ' (' + cat + ')', logFn, prog);
+    $('pStatus').textContent = '✅ Live! Product published.';
+    toast('Live! ' + name + ' published.', 'success');
+    // reset
+    $('pName').value = ''; $('pNameCn').value = ''; pImages.length = 0; renderPrev(pImages, 'pPreview', true);
+  } catch (e) {
+    logFn('ERROR: ' + e.message, 'err');
+    $('pStatus').textContent = '✗ Failed'; toast(e.message, 'error');
+  }
+});
+
+// Rebuild products.html: regenerate each section's prod-thumb-grid from the catalog.
+// Uses depth-counting to find the grid's true open/close range, and processes sections
+// in reverse order so earlier string indices stay valid as we edit.
+function rebuildProductsHtml(html, data) {
+  let out = html;
+  // reverse order: herringbone, chevron, strip-plank (processes last-indexed first)
+  ['herringbone', 'chevron', 'strip-plank'].forEach(slug => {
+    const cat = data.categories.find(c => c.slug === slug);
+    const prods = (cat && cat.products) ? cat.products : [];
+    const cards = prods.map(p => {
+      const code = p.code;
+      const label = code + (p.nameCn ? ' ' + p.nameCn : '');
+      return '  <div class="prod-thumb">\n    <div class="prod-thumb-img">\n      <img loading="eager" src="images/products/' + slug + '/' + code + '/1.jpg" alt="' + escAttr(label) + '">\n    </div>\n    <span class="prod-thumb-code">' + escHtml(label) + '</span>\n  </div>';
+    }).join('\n');
+    const r = findGridRange(out, slug);
+    if (!r) return;
+    out = out.substring(0, r.gridOpenEnd) + '\n' + cards + '\n' + out.substring(r.gridClose);
+  });
+  return out;
+}
+// Find the prod-thumb-grid open tag end and its matching </div> close (depth-counted),
+// scoped to the section with the given id.
+function findGridRange(html, slug) {
+  const secStart = html.indexOf('id="' + slug + '"');
+  if (secStart === -1) return null;
+  const gridClassIdx = html.indexOf('class="prod-thumb-grid"', secStart);
+  if (gridClassIdx === -1) return null;
+  const divStart = html.lastIndexOf('<div', gridClassIdx);
+  const openTagEnd = html.indexOf('>', divStart) + 1;
+  let depth = 1, pos = openTagEnd;
+  while (depth > 0 && pos < html.length) {
+    const nextOpen = html.indexOf('<div', pos);
+    const nextClose = html.indexOf('</div>', pos);
+    if (nextClose === -1) break;
+    if (nextOpen !== -1 && nextOpen < nextClose) { depth++; pos = nextOpen + 4; }
+    else { depth--; if (depth === 0) return { gridOpenEnd: openTagEnd, gridClose: nextClose }; pos = nextClose + 6; }
+  }
+  return null;
+}
+function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function escAttr(s) { return escHtml(s).replace(/"/g, '&quot;'); }
+
+//───────────────────────────────────────────────────────────
+// VLOG PUBLISH
+//───────────────────────────────────────────────────────────
+$('vPublish').addEventListener('click', async () => {
+  const title = $('vTitle').value.trim(), date = $('vDate').value.trim() || new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const tag = $('vTag').value.trim() || 'Article', slug = $('vSlug').value.trim(), excerpt = $('vExcerpt').value.trim();
+  const body = $('vBody').value.trim();
+  if (!title) { toast('Enter a title', 'error'); return; }
+  if (!slug || !validName(slug)) { toast('Slug: English letters/numbers/hyphen only', 'error'); return; }
+  if (vCover.length === 0) { toast('Add a cover photo', 'error'); return; }
+  if (!body) { toast('Enter body text', 'error'); return; }
+  // Check slug uniqueness against existing journal.html before publishing
+  try {
+    const curJournal = await fetchFile('journal.html');
+    const existing = parseAllArticles(curJournal);
+    if (existing.find(a => a.slug === slug)) {
+      toast('Slug "' + slug + '" already used. Choose a unique slug.', 'error');
+      $('vSlug').focus();
+      return;
+    }
+  } catch (e) { /* journal.html may not exist yet — allow */ }
+  const logFn = (m, c) => log('vLog', m, c);
+  const prog = p => $('vProgress').style.width = p + '%';
+  $('vLog').style.display = 'block'; $('vLog').innerHTML = '';
+  $('vStatus').textContent = 'Publishing...';
+  try {
+    logFn('Reading current journal.html...', 'dim');
+    const curJournal = await fetchFile('journal.html');
+
+    // build files
+    const files = [];
+    logFn('Converting cover image...', 'dim');
+    const coverB64 = await imgFileToJpegB64(vCover[0], 0);
+    files.push({ path: 'images/vlog/' + slug + '.jpg', content: coverB64, encoding: 'base64' });
+
+    // body images: images/vlog/{slug}-2.jpg, -3.jpg ...
+    const bodyParts = body.split(/\n\s*\n/); // paragraphs
+    let imgIdx = 0;
+    let imgPlaceholders = 0;
+    const renderedParas = [];
+    for (const part of bodyParts) {
+      if (part.trim() === '[IMG]') {
+        imgPlaceholders++;
+        if (imgPlaceholders > vBodyImages.length) { toast('Not enough body photos for [IMG] placeholders', 'error'); return; }
+        const b64 = await imgFileToJpegB64(vBodyImages[imgIdx], imgIdx);
+        const fname = slug + '-' + (imgIdx + 2) + '.jpg';
+        files.push({ path: 'images/vlog/' + fname, content: b64, encoding: 'base64' });
+        renderedParas.push('<figure><img src="images/vlog/' + fname + '" alt="' + escAttr(title) + '"></figure>');
+        imgIdx++;
+      } else {
+        renderedParas.push('<p>' + escHtml(part).replace(/\n/g, '<br>') + '</p>');
+      }
+      prog(Math.round((imgIdx + (renderedParas.length)) / (vBodyImages.length + 3 + bodyParts.length) * 40));
+    }
+
+    // generate journal/{slug}.html article page
+    const articleHtml = buildArticlePage(title, date, tag, excerpt, 'images/vlog/' + slug + '.jpg', renderedParas.join('\n      '));
+    files.push({ path: 'journal/' + slug + '.html', content: articleHtml, encoding: 'utf-8' });
+
+    // rewrite journal.html: prepend new article to allArticles array
+    const newJournal = rebuildJournalHtml(curJournal, { slug, img: 'images/vlog/' + slug + '.jpg', tag, title, date });
+    files.push({ path: 'journal.html', content: newJournal, encoding: 'utf-8' });
+
+    await commitFiles(files, 'Add vlog: ' + title, logFn, prog);
+    $('vStatus').textContent = '✅ Live! Vlog published.';
+    toast('Live! Vlog published.', 'success');
+    ['vTitle', 'vDate', 'vTag', 'vSlug', 'vExcerpt', 'vBody'].forEach(id => $(id).value = '');
+    vCover.length = 0; vBodyImages.length = 0; renderPrev(vCover, 'vPreview', false); renderPrev(vBodyImages, 'vBodyPreview', true);
+  } catch (e) {
+    logFn('ERROR: ' + e.message, 'err');
+    $('vStatus').textContent = '✗ Failed'; toast(e.message, 'error');
+  }
+});
+
+// Build a standalone article page (self-contained, matches site dark theme)
+function buildArticlePage(title, date, tag, excerpt, coverImg, bodyHtml) {
+  return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<link rel="stylesheet" href="../css/style.css">\n<title>' + escHtml(title) + ' — GARASTOR</title>\n<style>body{background:#0f0d0a;color:#e8e4df;font-family:Georgia,serif;}.wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem;}.wrap h1{font-weight:400;font-size:2.2rem;line-height:1.3;color:#c8a96e;}figure{margin:1.5rem 0;}figure img{width:100%;}p{line-height:1.9;font-size:1.05rem;color:#d8d4cf;}header{margin-bottom:2rem;}nav a{color:#c8a96e;}nav{font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;}</style>\n</head>\n<body>\n<div class="wrap">\n  <nav><a href="../journal.html">&larr; Back to Journal</a></nav>\n  <header>\n    <h1>' + escHtml(title) + '</h1>\n    <p style="color:#8a8580;font-size:0.85rem;letter-spacing:0.05em;text-transform:uppercase;">' + escHtml(tag) + ' &middot; ' + escHtml(date) + '</p>\n  </header>\n  <figure><img src="../' + escAttr(coverImg) + '" alt="' + escAttr(title) + '"></figure>\n  ' + (excerpt ? '<p style="font-style:italic;color:#c8a96e;font-size:1.1rem;">' + escHtml(excerpt) + '</p>' : '') + '\n  ' + bodyHtml + '\n</div>\n</body>\n</html>\n';
+}
+
+// Prepend a new article object to the allArticles array in journal.html
+function rebuildJournalHtml(html, art) {
+  const newEntry = "  { slug: '" + art.slug + "', img: '" + art.img + "', tag: '" + escHtml(art.tag).replace(/'/g, "\\'") + "', title: '" + escHtml(art.title).replace(/'/g, "\\'") + "', date: '" + escHtml(art.date) + "' }";
+  const arrStart = html.indexOf('var allArticles = [');
+  if (arrStart === -1) throw new Error('Cannot find allArticles in journal.html');
+  const insertPos = html.indexOf('[', arrStart) + 1;
+  return html.substring(0, insertPos) + '\n' + newEntry + ',' + html.substring(insertPos);
+}
+
+//───────────────────────────────────────────────────────────
+// UTILS
+//───────────────────────────────────────────────────────────
+function log(boxId, msg, cls) {
+  const box = $(boxId); box.style.display = 'block';
+  box.innerHTML += '<span' + (cls ? ' class="' + cls + '"' : '') + '>' + escHtml(msg) + '</span>\n';
+  box.scrollTop = box.scrollHeight;
+}
+function toast(msg, type) {
+  const t = $('toast'); t.textContent = msg; t.className = 'toast ' + (type || '') + ' show';
+  clearTimeout(t._tm); t._tm = setTimeout(() => { t.className = 'toast'; }, 3000);
+}
+</script>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b201e45bf8594e13b43fcca0d182576d"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>

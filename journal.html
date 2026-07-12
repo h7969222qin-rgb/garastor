@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The GARASTOR Journal — European design tradition, European craftsmanship, and the philosophy of the floor. Philosophy meets oak. Thought meets surface.">
+<title>Journal | Garastro European Hardwood Flooring &amp; Construction Timber Material Supplier</title>
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+<style>
+img { display: inline-block !important; visibility: visible !important; opacity: 1 !important; }
+.journal-card img { display: inline-block !important; visibility: visible !important; opacity: 1 !important; width: 100% !important; height: auto !important; object-fit: contain !important; margin-bottom: var(--space-lg) !important; }
+.journal-card-link { text-decoration: none; color: inherit; display: block; }
+.journal-date { font-size: var(--font-size-xs); color: var(--color-gray-400); margin-top: var(--space-sm); }
+.pagination { display: flex; justify-content: center; gap: 8px; padding: 0 0 var(--space-4xl); }
+.pagination button { width: 40px; height: 40px; border: 1px solid var(--color-gray-200); background: var(--color-white); cursor: pointer; font-size: 14px; transition: all 0.2s; }
+.pagination button:hover { border-color: #999; color: #1a1a1a; }
+.pagination button.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+.pagination button:disabled { opacity: 0.3; cursor: default; }
+.page-header-products { background: #EAE0D5; padding: 80px 0 50px; }
+.page-header-products .section-eyebrow { color: #8B7355 !important; font-size: 10px; letter-spacing: 0.25em; }
+.page-header-products .page-title { color: #3A3028 !important; font-size: 2rem; font-weight: 300; letter-spacing: 0.04em; }
+.page-header-products .page-desc { color: #8B7355 !important; font-size: 0.85rem; letter-spacing: 0.06em; max-width: 480px; }
+body { background: #fff !important; }
+@media (max-width: 900px) { .journal-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+@media (max-width: 600px) { .journal-grid { grid-template-columns: 1fr !important; } }
+</style>
+</head>
+<body>
+<header class="site-header dark">
+  <a href="index.html" class="header-logo">GARASTOR</a>
+  <nav class="main-nav">
+    <a href="products.html">Products</a>
+    <a href="collections.html">Collections</a>
+    <a href="brand-story.html">Our Story</a>
+    <a href="lookbook.html">Gallery</a>
+    <a href="boutiques.html">Factory</a>
+    <a href="journal.html">Journal</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu">
+  <a href="products.html">Products</a>
+  <a href="collections.html">Collections</a>
+  <a href="brand-story.html">Our Story</a>
+  <a href="lookbook.html">Gallery</a>
+  <a href="boutiques.html">Factory</a>
+  <a href="journal.html">Journal</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-header-products">
+<div class="container">
+<p class="section-eyebrow">Articles</p>
+<h1 class="page-title">The Journal</h1>
+<p class="page-desc">A journal at the intersection of European design tradition, European craftsmanship, and the philosophy of the floor. Philosophy meets oak. Thought meets surface.</p>
+</div>
+</section>
+
+<div class="journal-grid container" id="journalGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-lg);padding-top:var(--space-2xl);"></div>
+<div class="pagination" id="pagination"></div>
+
+<footer class="site-footer"><div class="container">
+<div class="footer-grid">
+<div class="footer-brand"><div class="footer-logo">GARASTOR</div><p><br>Since 1996<br>FSC Certified &middot; ISO 9001 &middot; CE Certified</p></div>
+<div class="footer-nav"><h4>Explore</h4><a href="products.html">All Products</a><a href="collections.html">Collections</a><a href="lookbook.html">Gallery</a><a href="journal.html">Journal</a></div>
+<div class="footer-nav"><h4>Services</h4><a href="contact.html">Free Consultation</a><a href="contact.html">Sample Request</a><a href="boutiques.html">Factory Tour</a><a href="contact.html">After-Sales</a></div>
+<div class="footer-nav"><h4>Brand</h4><a href="brand-story.html">Our Story</a><a href="boutiques.html">Factory</a><a href="contact.html">Contact Us</a></div>
+</div>
+<div class="footer-bottom"><p>&copy; 2026 GARASTOR. All rights reserved. | European Design House · Factory: Serbia · European Design</p></div>
+</div></footer>
+<script>
+var allArticles = [
+  { slug: 'vattimo-weak-thought-floor',   img: 'images/products/strip-plank/Murano/1.jpg',   tag: 'philosophy', title: 'Weak Thought and the Floor: What Vattimo Teaches Us About the Ground Beneath Our Feet',   date: '22 June 2026' },
+  { slug: 'agamben-bare-life-form',        img: 'images/products/strip-plank/Sicily/1.jpg',tag: 'Philosophy of Form',   title: 'La Forma-di-Vita: Agamben, the Floor, and the Indivisibility of Living',                  date: '18 June 2026' },
+  { slug: 'eco-open-work-floor',           img: 'images/products/chevron/Lipari/1.jpg',        tag: 'Semiotics of Space',  title: 'Opera Aperta: Umberto Eco and the Floor That Reads Its Walker',                         date: '12 June 2026' },
+  { slug: 'negri-multitude-common-surface',img: 'images/products/herringbone/Elba/1.jpg',     tag: 'Political Ontology',  title: 'The Floor as Common: Negri, the Multitude, and the Assemblages Beneath Our Feet',       date: '5 June 2026' },
+  { slug: 'deleuze-fold-floor-leibniz',     img: 'images/products/chevron/Giannutri/1.jpg',  tag: 'Baroque Ontology',    title: 'The Fold: Deleuze, Leibniz, and the Chevron as Baroque Surface',                        date: '29 May 2026' },
+  { slug: 'schelling-nature-floor-reverence',img: 'images/products/strip-plank/Budelli/1.jpg',tag: 'Naturphilosophie', title: 'Visible Spirit: Schelling, Nature, and the Floor That Remembers the Forest',             date: '20 May 2026' },
+];
+var PER_PAGE = 6;
+var currentPage = 1;
+
+function renderPage(page) {
+  currentPage = page;
+  var filtered = allArticles;
+  var start = (page - 1) * PER_PAGE;
+  var pageArticles = filtered.slice(start, start + PER_PAGE);
+  var totalPages = Math.ceil(filtered.length / PER_PAGE);
+
+  var grid = document.getElementById('journalGrid');
+  grid.innerHTML = pageArticles.map(function(a) {
+    return '<a href="' + (a.slug ? 'journal/' + a.slug + '.html' : '#') + '" class="journal-card-link">' +
+      '<article class="journal-card">' +
+        '<img loading="eager" src="' + a.img + '" alt="European oak hardwood flooring for interior construction &amp; civil engineering project - Garastro">' +
+        '<div class="journal-card-body">' +
+          '<span class="journal-tag">' + a.tag + '</span>' +
+          '<h3>' + a.title + '</h3>' +
+          '<div class="journal-date">' + a.date + '</div>' +
+        '</div>' +
+      '</article>' +
+    '</a>';
+  }).join('');
+
+  var pag = document.getElementById('pagination');
+  if (totalPages <= 1) { pag.innerHTML = ''; return; }
+  var html = '<button ' + (page === 1 ? 'disabled' : '') + ' onclick="renderPage(' + (page - 1) + ')">&laquo;</button>';
+  for (var i = 1; i <= totalPages; i++) {
+    html += '<button class="' + (i === page ? 'active' : '') + '" onclick="renderPage(' + i + ')">' + i + '</button>';
+  }
+  html += '<button ' + (page === totalPages ? 'disabled' : '') + ' onclick="renderPage(' + (page + 1) + ')">&raquo;</button>';
+  pag.innerHTML = html;
+  window.scrollTo({ top: 350, behavior: 'smooth' });
+}
+
+renderPage(1);
+</script>
+<script src="js/main.js"></script>
+<!-- 技术诚信声明 / Technische Transparenzerklärung:
+     网站架构、HTML结构、CSS布局均由本人亲自搭建。
+     JavaScript逻辑部分参考了AI建议（本人初学JS），但经过亲自调试和测试。
+     文案内容由AI辅助撰写（本人文学功底有限）。
+     Die Website-Architektur, HTML-Struktur und das CSS-Layout wurden eigenständig erstellt. 
+     Teile der JavaScript-Logik wurden mit KI-Hilfe entwickelt (der Betreiber ist JS-Anfänger), aber selbst getestet. 
+     Alle Texte wurden mit KI-Unterstützung verfasst. -->
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b201e45bf8594e13b43fcca0d182576d"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
