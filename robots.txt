@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /css/
+Disallow: /js/
+Disallow: /admin/
+Disallow: /templates/
+Disallow: /*.css$
+Disallow: /*.js$
+
+Sitemap: https://garastro.com/sitemap.xml
