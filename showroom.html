@@ -38,7 +38,7 @@ h1 { text-align:center; padding:40px 20px 10px; font-size:2rem; font-weight:400;
   <div class="loading">Loading products...</div>
 </div>
 
-<p class="footer-text">GARASTOR — A House of JONHOS · Founded 1996 · Factory: Serbia · Red Dot Award 2023</p>
+<p class="footer-text">GARASTOR — European Design House · Founded 1996 · Factory: Serbia · Red Dot Award 2023</p>
 
 <script>
 var products = [
@@ -101,7 +101,7 @@ products.forEach(function(p) {
   html += '<a href="products/' + p.cat + '/' + p.code + '.html" class="card">' +
     '<img src="' + src + '" alt="' + p.code + '" loading="eager" ' +
     'onload="this.parentElement.style.borderBottom=\\'2px solid #2a2\\'" ' +
-    'onerror="this.parentElement.style.borderBottom=\\'2px solid red\\';this.src=\\'https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/favicon.svg\\'">' +
+    'onerror="this.parentElement.style.borderBottom=\\'2px solid red\\';this.src=\\'images/favicon.svg\\'">' +
     '<div class="card-info"><h3>' + p.family + '</h3>' +
     '<div class="code">' + p.code + '</div>' +
     '<div class="family">' + p.family + ' Collection</div></div></a>';
@@ -116,5 +116,5 @@ document.getElementById('gallery').innerHTML = html;
      Die Website-Architektur, HTML-Struktur und das CSS-Layout wurden eigenständig erstellt. 
      Teile der JavaScript-Logik wurden mit KI-Hilfe entwickelt (der Betreiber ist JS-Anfänger), aber selbst getestet. 
      Alle Texte wurden mit KI-Unterstützung verfasst. -->
-</body>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b201e45bf8594e13b43fcca0d182576d"}'></script><!-- Cloudflare Pages Analytics --></body>
 </html>

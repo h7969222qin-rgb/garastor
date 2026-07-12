@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ProductsDetails — GARASTOR</title>
-<link rel="icon" type="image/svg+xml" href='https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <!-- Google Fonts removed for local rendering -->
 <style>
 :root{--bg:#080808;--surface:#111;--border:#222;--gold:#c8a45c;--text:#e8e4df;--dim:#6b6762;--font-display:Georgia,'Times New Roman','Noto Serif SC',serif;--font-body:'Segoe UI','Helvetica Neue',Arial,sans-serif}
@@ -68,7 +68,7 @@ var related=cat.products.filter(function(p){return p.code!==code});
 for(var ri=related.length-1;ri>0;ri--){var rj=Math.floor(Math.random()*(ri+1));var t=related[ri];related[ri]=related[rj];related[rj]=t}
 related=related.slice(0,6);
 
-var relHTML='';related.forEach(function(r){var rs=r.subcategory?r.subcategory+'/':'';var rf=r.firstImg||1;var rn=rf<10?'0'+rf:''+rf;relHTML+='<a href="product-detail.html?id='+encodeURIComponent(r.code)+'" class="rel-card"><img src="/images/products/'+cat.slug+'/'+r.code+'/'+r.code+'_'+rn+'.jpg" alt="'+r.code+'" loading="lazy" onerror="this.style.border=\'2px solid red\'"><span>'+r.code+'</span></a>'});
+var relHTML='';related.forEach(function(r){var rs=r.subcategory?r.subcategory+'/':'';var rf=r.firstImg||1;var rn=rf<10?'0'+rf:''+rf;relHTML+='<a href="product-detail.html?id='+encodeURIComponent(r.code)+'" class="rel-card"><img src="./images/products/'+cat.slug+'/'+r.code+'/'+r.code+'_'+rn+'.jpg" alt="'+r.code+'" loading="lazy" onerror="this.style.border=\'2px solid red\'"><span>'+r.code+'</span></a>'});
 
 var stripHTML=imgs.map(function(src,i){return '<img src="'+src+'" class="'+(i===0?'active':'')+'" data-idx="'+i+'" onerror="this.style.border=\'2px solid red\'" onclick="switchImg('+i+')">'}).join('');
 
@@ -112,5 +112,5 @@ window.navImg=function(dir){var n=(window.currentImg+dir+imgs.length)%imgs.lengt
      Die Website-Architektur, HTML-Struktur und das CSS-Layout wurden eigenständig erstellt. 
      Teile der JavaScript-Logik wurden mit KI-Hilfe entwickelt (der Betreiber ist JS-Anfänger), aber selbst getestet. 
      Alle Texte wurden mit KI-Unterstützung verfasst. -->
-</body>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b201e45bf8594e13b43fcca0d182576d"}'></script><!-- Cloudflare Pages Analytics --></body>
 </html>

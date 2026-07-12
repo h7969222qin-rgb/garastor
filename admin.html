@@ -274,7 +274,7 @@ Third paragraph after an image."></textarea>
 'use strict';
 
 const OWNER = 'h7969222qin-rgb';
-const REPO = 'garastro';
+const REPO = 'garastor';
 const BRANCH = 'main';
 const TOKEN_FILE = 'token.enc';
 // Fixed salt for PBKDF2 (protecting a repo-scoped token — acceptable).
@@ -867,12 +867,10 @@ $('pPublish').addEventListener('click', async () => {
     files.push({ path: 'products.html', content: newHtml, encoding: 'utf-8' });
 
     await commitFiles(files, 'Add product: ' + name + ' (' + cat + ')', logFn, prog);
-    $('pStatus').innerHTML = '✅ Live! <a href=\"https://garastor1.pages.dev/products\" target=\"_blank\" style=\"color:#27ae60;font-weight:600;\">View on site →</a>';
+    $('pStatus').textContent = '✅ Live! Product published.';
     toast('Live! ' + name + ' published.', 'success');
     // reset
     $('pName').value = ''; $('pNameCn').value = ''; pImages.length = 0; renderPrev(pImages, 'pPreview', true);
-    // auto-refresh Manage list if visible
-    try{loadManageLists()}catch{}
   } catch (e) {
     logFn('ERROR: ' + e.message, 'err');
     $('pStatus').textContent = '✗ Failed'; toast(e.message, 'error');
@@ -891,7 +889,7 @@ function rebuildProductsHtml(html, data) {
     const cards = prods.map(p => {
       const code = p.code;
       const label = code + (p.nameCn ? ' ' + p.nameCn : '');
-      return '  <div class="prod-thumb">\n    <div class="prod-thumb-img">\n      <img loading="eager" src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/products/' + slug + '/' + code + '/1.jpg" alt="' + escAttr(label) + '">\n    </div>\n    <span class="prod-thumb-code">' + escHtml(label) + '</span>\n  </div>';
+      return '  <div class="prod-thumb">\n    <div class="prod-thumb-img">\n      <img loading="eager" src="images/products/' + slug + '/' + code + '/1.jpg" alt="' + escAttr(label) + '">\n    </div>\n    <span class="prod-thumb-code">' + escHtml(label) + '</span>\n  </div>';
     }).join('\n');
     const r = findGridRange(out, slug);
     if (!r) return;
@@ -968,7 +966,7 @@ $('vPublish').addEventListener('click', async () => {
         const b64 = await imgFileToJpegB64(vBodyImages[imgIdx], imgIdx);
         const fname = slug + '-' + (imgIdx + 2) + '.jpg';
         files.push({ path: 'images/vlog/' + fname, content: b64, encoding: 'base64' });
-        renderedParas.push('<figure><img src="https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/vlog/' + fname + '" alt="' + escAttr(title) + '"></figure>');
+        renderedParas.push('<figure><img src="images/vlog/' + fname + '" alt="' + escAttr(title) + '"></figure>');
         imgIdx++;
       } else {
         renderedParas.push('<p>' + escHtml(part).replace(/\n/g, '<br>') + '</p>');
@@ -981,11 +979,11 @@ $('vPublish').addEventListener('click', async () => {
     files.push({ path: 'journal/' + slug + '.html', content: articleHtml, encoding: 'utf-8' });
 
     // rewrite journal.html: prepend new article to allArticles array
-    const newJournal = rebuildJournalHtml(curJournal, { slug, img: 'https://cdn.jsdelivr.net/gh/h7969222qin-rgb/garastro@main/images/vlog/' + slug + '.jpg', tag, title, date });
+    const newJournal = rebuildJournalHtml(curJournal, { slug, img: 'images/vlog/' + slug + '.jpg', tag, title, date });
     files.push({ path: 'journal.html', content: newJournal, encoding: 'utf-8' });
 
     await commitFiles(files, 'Add vlog: ' + title, logFn, prog);
-    $('vStatus').innerHTML = '✅ Live! <a href=\"https://garastor1.pages.dev/journal\" target=\"_blank\" style=\"color:#27ae60;font-weight:600;\">View journal →</a>' + (slug ? ' or <a href=\"https://garastor1.pages.dev/journal/' + slug + '.html\" target=\"_blank\" style=\"color:#27ae60;\">read article →</a>' : '');
+    $('vStatus').textContent = '✅ Live! Vlog published.';
     toast('Live! Vlog published.', 'success');
     ['vTitle', 'vDate', 'vTag', 'vSlug', 'vExcerpt', 'vBody'].forEach(id => $(id).value = '');
     vCover.length = 0; vBodyImages.length = 0; renderPrev(vCover, 'vPreview', false); renderPrev(vBodyImages, 'vBodyPreview', true);
@@ -1022,5 +1020,5 @@ function toast(msg, type) {
   clearTimeout(t._tm); t._tm = setTimeout(() => { t.className = 'toast'; }, 3000);
 }
 </script>
-</body>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b201e45bf8594e13b43fcca0d182576d"}'></script><!-- Cloudflare Pages Analytics --></body>
 </html>
